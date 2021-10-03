@@ -9,7 +9,12 @@ const addNoteHandler = (request, h) => {
   const updatedAt = createdAt;
 
   const newNote = {
-    title, tags, body, id, createdAt, updatedAt,
+    title,
+    tags,
+    body,
+    id,
+    createdAt,
+    updatedAt,
   };
 
   notes.push(newNote);
@@ -20,9 +25,7 @@ const addNoteHandler = (request, h) => {
     const response = h.response({
       status: 'success',
       message: 'Catatan berhasil ditambahkan',
-      data: {
-        noteId: id,
-      },
+      data: { noteId: id },
     });
     response.code(201);
     return response;
@@ -38,22 +41,18 @@ const addNoteHandler = (request, h) => {
 
 const getAllNotesHandler = () => ({
   status: 'success',
-  data: {
-    notes,
-  },
+  data: { notes },
 });
 
 const getNoteByIdHandler = (request, h) => {
   const { id } = request.params;
 
-  const note = notes.filter((n) => n.id === id)[0];
+  const note = notes.find((n) => n.id === id);
 
-  if (note !== undefined) {
+  if (note) {
     return {
       status: 'success',
-      data: {
-        note,
-      },
+      data: { note },
     };
   }
 
