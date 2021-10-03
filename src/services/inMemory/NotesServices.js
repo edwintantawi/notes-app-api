@@ -5,7 +5,7 @@ class NotesServices {
     this._notes = [];
   }
 
-  addNote({ title, body, tags }) {
+  addNote({ title, tags, body }) {
     const id = nanoid(16);
     const createdAt = new Date().toISOString();
     const updatedAt = createdAt;
@@ -40,7 +40,7 @@ class NotesServices {
     return note;
   }
 
-  editNoteById(id, { title, body, tags }) {
+  editNoteById(id, { title, tags, body }) {
     const index = this._notes.findIndex((note) => note.id === id);
 
     if (index === -1) {
@@ -52,8 +52,8 @@ class NotesServices {
     this._notes[index] = {
       ...this._notes[index],
       title,
-      body,
       tags,
+      body,
       updatedAt,
     };
   }
