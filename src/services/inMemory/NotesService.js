@@ -1,6 +1,6 @@
 const { nanoid } = require('nanoid');
 
-class NotesServices {
+class NotesService {
   constructor() {
     this._notes = [];
   }
@@ -69,4 +69,4 @@ class NotesServices {
   }
 }
 
-module.exports = NotesServices;
+module.exports = NotesService;
