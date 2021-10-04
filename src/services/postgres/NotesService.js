@@ -15,7 +15,7 @@ class NotesService {
 
     const query = {
       text: 'INSERT INTO notes VALUES($1, $2, $3, $4, $5, $6) RETURNING id',
-      values: [id, title, body, tags, createdAt, updatedAt],
+      values: [id, title, tags, body, createdAt, updatedAt],
     };
 
     const result = await this._pool.query(query);
@@ -42,7 +42,7 @@ class NotesService {
 
     if (!result.rows.length) throw new NotFoundError('Catatan tidak ditemukan');
 
-    return result.rows.map(mapDBToModel);
+    return result.rows.map(mapDBToModel)[0];
   }
 
   async editNoteById(id, { title, tags, body }) {
