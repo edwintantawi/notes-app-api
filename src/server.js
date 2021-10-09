@@ -12,6 +12,9 @@ const users = require('./api/users');
 const UsersService = require('./services/postgres/UsersService');
 const UsersValidator = require('./validator/users');
 
+// extensions
+const extensions = require('./api/extensions');
+
 const init = async () => {
   const notesService = new NotesService();
   const usersService = new UsersService();
@@ -31,6 +34,7 @@ const init = async () => {
       plugin: users,
       options: { service: usersService, validator: UsersValidator },
     },
+    { plugin: extensions },
   ]);
 
   await server.start();
