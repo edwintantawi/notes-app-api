@@ -5,6 +5,17 @@ class ExtensionsHandler {
   onPreResponseHandler(request, h) {
     const { response } = request;
 
+    const authError = response?.output?.payload?.error === 'Unauthorized';
+
+    if (authError) {
+      const newResponse = h.response({
+        status: 'fail',
+        message: response.output.payload.message,
+      });
+      newResponse.code(response.output.statusCode);
+      return newResponse;
+    }
+
     if (response instanceof ClientError) {
       const newResponse = h.response({
         status: 'fail',
