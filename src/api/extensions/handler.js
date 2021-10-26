@@ -5,7 +5,6 @@ class ExtensionsHandler {
   onPreResponseHandler(request, h) {
     const { response } = request;
 
-    console.log(response);
     const authError = response?.output?.payload?.error === 'Unauthorized';
 
     if (authError) {

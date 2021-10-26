@@ -3525,6 +3525,143 @@
 					}
 				}
 			]
+		},
+		{
+			"name": "Uploads",
+			"item": [
+				{
+					"name": "Upload Image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response status should be 201', () => {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									" ",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json; charset=utf-8');",
+									"});",
+									" ",
+									"pm.test('response should contains fileLocation in body data response', () => {",
+									"    const responseJson = pm.response.json();",
+									" ",
+									"    pm.expect(responseJson).to.have.ownProperty('status');",
+									"    pm.expect(responseJson).to.have.ownProperty('data');",
+									" ",
+									"    pm.expect(responseJson.status).to.equals('success');",
+									"    pm.expect(responseJson.data).to.be.an('object');",
+									" ",
+									"    const { data } = responseJson;",
+									" ",
+									"    pm.expect(data).to.have.ownProperty('fileLocation');",
+									"    pm.expect(data.fileLocation).to.be.a('string');",
+									"    pm.expect(data.fileLocation).to.not.equals('');",
+									" ",
+									"    // memasukkan fileLocation ke environment variable",
+									"    pm.environment.set('fileLocation', data.fileLocation);",
+									"});",
+									" ",
+									"pm.test('when requesting the fileLocation', () => {",
+									"    const fileLocation = pm.environment.get('fileLocation');",
+									" ",
+									"    pm.sendRequest(fileLocation, (_, response) => {",
+									"        pm.test('response code should be 200', () => {",
+									"            pm.expect(response.code).to.equals(200);",
+									"        })",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "data",
+									"type": "file",
+									"src": "/home/wintantawi/Downloads/flower.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/upload/images",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"upload",
+								"images"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Image with Non-Image File",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('response code should have 400 value', () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									" ",
+									"pm.test('response Content-Type header should have application/json value', () => {",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json; charset=utf-8');",
+									"});",
+									" ",
+									"pm.test('response body should have the correct property and value', () => {",
+									"   const responseJson = pm.response.json();",
+									" ",
+									"   pm.expect(responseJson).to.have.ownProperty('status');",
+									"   pm.expect(responseJson.status).to.equals('fail');",
+									"   pm.expect(responseJson).to.have.ownProperty('message');",
+									"   pm.expect(responseJson.message).to.be.a('string');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "data",
+									"type": "file",
+									"src": "/home/wintantawi/Downloads/text.txt"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/upload/images",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"upload",
+								"images"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
